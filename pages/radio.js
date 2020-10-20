@@ -1,20 +1,39 @@
+import { useSpeechAPI } from '../hooks/useSpeechAPI';
 import Layout from '../components/MainLayout';
 import MetaHead from '../components/MetaHead';
 import ChapterNavigation from '../components/ChapterNavigation';
 import ChapterTitle from '../components/ChapterTitle';
 import RadioData from '../data/radio';
+import { FaVolumeUp } from 'react-icons/fa'
 import { BASE_PATH } from '../constants';
+import { useState } from 'react';
 
 const title = 'Kode Radio Lengkap | Buku Saku Pramuka Digital';
 const desc = 'Daftar lengkap kode radio';
 const url = BASE_PATH + '/radio/';
 
 function LambangPramukaPage() {
+
+  const { canSpeak } = useSpeechAPI();
+  const [ isSpeak, setIsSpeak ] = useState('');
+
+  const playAudio = (word) => {
+    try {
+      let utterance = new SpeechSynthesisUtterance(word);
+      utterance.lang = "en-US"
+      utterance.onstart = () => setIsSpeak(word); //when starting to play audio
+      utterance.onend = () => setIsSpeak(''); //when finished playing audio
+      speechSynthesis.speak(utterance);
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   return (
     <Layout>
       <MetaHead title={title} desc={desc} url={url} />
-      <ChapterNavigation nextLink="/" />
-      <ChapterTitle subTitle="Kode Radio" title="Materi Pramuka" />
+      <ChapterNavigation nextLink="/hari-peringatan-nasional" />
+      <ChapterTitle subTitle="Kode Radio" title="Materi Kecakapan Umum" />
 
       <div className="text-center md:text-left">
         <div>
@@ -25,11 +44,13 @@ function LambangPramukaPage() {
                 {RadioData[section.key].map((item) => (
                   <div
                     key={item.text}
-                    className="w-1/2 md:w-1/5 flex items-center rounded overflow-hidden shadow-lg"
+                    onClick={() => canSpeak && playAudio(item.code.toLowerCase())}
+                    className="w-1/2 md:w-1/5 flex items-center rounded overflow-hidden shadow-lg cursor-pointer"
                   >
-                    <div className="px-2 py-2 flex items-center">
+                    <div className="px-2 py-2 flex items-center w-full">
                       <div className="w-10">{item.text}</div>{' '}
                       <div className="text-orange-500">{item.code}</div>
+                      {canSpeak && <div className={ (isSpeak === item.code.toLowerCase()) ? "ml-auto text-orange-900" : "ml-auto text-gray-500" }><FaVolumeUp/></div>}
                     </div>
                   </div>
                 ))}
@@ -39,7 +60,7 @@ function LambangPramukaPage() {
         </div>
       </div>
 
-      <ChapterNavigation nextLink="/" />
+      <ChapterNavigation nextLink="/hari-peringatan-nasional" />
     </Layout>
   );
 }
