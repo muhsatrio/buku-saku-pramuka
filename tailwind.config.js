@@ -1,6 +1,10 @@
-const {theme} = require('tailwindcss/defaultConfig')
+const { theme } = require('tailwindcss/defaultConfig')
+const defaultTheme = require('tailwindcss/defaultTheme')
+
 module.exports = {
-  purge: ['./components/**/*.js', './pages/**/*.js'],
+  mode: 'jit',
+  purge: ['./src/pages/**/*.{js,ts,jsx,tsx}', './src/components/**/*.{js,ts,jsx,tsx}'],
+  darkMode: 'class',
   theme: {
     extend: {
       textColor: {
@@ -13,31 +17,35 @@ module.exports = {
       },
       backgroundColor: {
         pramuka: 'var(--color-background-pramuka)',
+        'pramuka-700': 'var(--color-background-pramuka-700)',
         primary: 'var(--color-background-primary)',
         hover: 'var(--color-background-hover)',
         card: 'var(--color-background-card)'
+      },
+      fontFamily: {
+        sans: ['Inter', ...defaultTheme.fontFamily.sans]
       }
     },
     inset: {
-      '0': 0,
-      '1/2': '50%',
+      0: 0,
+      '1/2': '50%'
     },
     minWidth: {
-      '80': '80px',
-      '150': '150px',
-      '250': '250px',
-      full: '100%',
+      80: '80px',
+      150: '150px',
+      250: '250px',
+      full: '100%'
     },
     minHeight: {
-      '80': '80px',
+      80: '80px',
       full: '100%',
-      screen: '100vh',
+      screen: '100vh'
     },
     listStyleType: {
       ...theme.listStyleType,
-      'lower-alpha': 'lower-alpha',
+      'lower-alpha': 'lower-alpha'
     }
   },
   variants: {},
-  plugins: [],
-};
+  plugins: []
+}

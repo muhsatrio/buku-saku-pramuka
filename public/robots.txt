@@ -1,2 +1,9 @@
+# *
 User-agent: *
-Sitemap: https://buku-saku-pramuka.vercel.app/sitemap.xml
+Allow: /
+
+# Host
+Host: https://pramuka.online
+
+# Sitemaps
+Sitemap: https://pramuka.online/sitemap.xml
